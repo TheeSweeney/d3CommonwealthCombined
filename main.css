@@ -174,7 +174,7 @@ body,html{
 	font-size: 10px;
 }
 
-/*Chart2*/
+/*Chart3*/
 #container3 #controls{
   margin-bottom: 10px;
 }
@@ -215,3 +215,61 @@ body,html{
   cursor: pointer;
 }
 
+
+/*Chart 4*/
+
+#container4 .label {
+	cursor: default;
+	font-weight: 300;
+}
+
+#container4 #chartTitle{
+	font-size: 29px;
+	fill: black;
+}
+
+#container4 .keyText {
+	fill: black;
+	text-anchor: start;
+	font-size: 14px;
+}
+
+#container4 .oldPoints, #container4 .oldInfoText{
+	fill: rgb(250, 202, 168);
+}
+
+#container4 .newPoints, #container4 .newInfoText {
+	fill: rgb(243, 123, 49);
+}
+
+#container4 .y.axis .domain{
+	stroke-width: 0;
+}
+
+#container4 .x.axis .domain{
+	stroke: #808080;
+}
+
+#container4 .bar {
+	fill: #ccc;
+}
+
+#container4 .btn {
+	margin: 0 5px 0 5px;
+	background-color: white;
+	border-width: 1px;
+	border-color: #808080;
+}
+#container4 text {
+	fill: #808080;
+	font-weight: 300;
+}
+
+#container4 .note {
+	font-size: 10px;
+	fill: black;
+}
+
+#container4 .infoNumber{
+	font-size: 20px;
+}

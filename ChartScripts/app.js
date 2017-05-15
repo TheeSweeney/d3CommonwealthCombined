@@ -10,14 +10,14 @@ var margin = {
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var svg = d3.select('body').append('svg')
-            .attr('id', 'chart')
+var svg = d3.select('#container4').append('svg')
+            .classed('chart', true)
             .attr('width', w)
             .attr('height', h)
 var chart = svg.append('g')
               .classed('display', true)
               .attr('transform','translate(' + margin.right  + ',' + margin.top + ')')
-var controls = d3.select('body')
+var controls = d3.select('#container4')
                 .append('div')
                 .attr('id', 'controls');
 var x = d3.scale.linear()
