@@ -5,172 +5,216 @@ body,html{
 	font-size: 0.95em;
 	text-align: center;
 }
-#chart{
+/*Chart 1*/
+#container1 #chart{
 	border: 1px solid #CCC;
 }
 
-text {
+#container1 text {
 	fill: #ccc;
 	font-size: 14px;
 }
 
-.axis path, .axis line{
+#container1 .axis path, .axis line{
 	fill: none;
 	stroke: none;
 	shape-rendering: crispEdges;
 }
 
-.tick text{
+#container1 .tick text{
 	fill: gray;
 }
 
-.trendline{
+#container1 .trendline{
 	fill: none;
 	stroke: #ccc;
 	stroke-width: 3px;
 }
 
-.gridline line{
+#container1 .gridline line{
 	fill: none;
 	stroke: #ccc;
 	shape-rendering: crispEdges;
 }
 
-#chartTitle{
+#container1 #chartTitle{
 	font-size: 29px;
 	fill: black;
 }
 
-.key{
+#container1 .key{
 	cursor: default;
 	shape-rendering: crispEdges;
 }
 
-.keyText{
+#container1 .keyText{
 	cursor: default;
 	font-size: 12px;
 }
 
-.infoBubbleData{
+#container1 .infoBubbleData{
 	fill: black;
 }
 
-#infoBubble{
+#container1 #infoBubble{
 	fill: white;
 	stroke-width: 3px;
 }
 
-#infoBubbleYear{
+#container1 #infoBubbleYear{
 	font-size: 12px;
 }
 
-#infoBubbleGDP{
+#container1 #infoBubbleGDP{
 	font-size: 30px;
 }
 
-#UnitedStatesline, .UnitedStatesInfoBox{
+#container1 #UnitedStatesline, #container1 .UnitedStatesInfoBox{
 	stroke: rgb(162,83,35);
 }
-#UnitedStateskey, #UnitedStateskeyText{
+#container1 #UnitedStateskey, #container1 #UnitedStateskeyText{
 	fill:  rgb(162,83,35);
 }
-.UnitedStatespoints{
+#container1 .UnitedStatespoints{
 	fill: rgb(162,83,35);
 }
-#Franceline, .FranceInfoBox{
+#container1 #Franceline, #container1 .FranceInfoBox{
 	stroke:rgb(57,123,122);
 }
-#Francekey, #FrancekeyText{
+#container1 #Francekey, #container1 #FrancekeyText{
 	fill: rgb(57,123,122);
 }
-.Francepoints{
+#container1 .Francepoints{
 	fill: rgb(57,123,122);	
 }
-#Sweden1line, #Sweden2line, .Sweden2InfoBox, .Sweden1InfoBox{
+#container1 #Sweden1line, #container1 #Sweden2line, #container1 .Sweden2InfoBox, #container1 .Sweden1InfoBox{
 	stroke:rgb(88,191,191);
 }
-#Sweden1key, #Sweden1keyText{
+#container1 #Sweden1key, #container1 #Sweden1keyText{
 	fill: rgb(88,191,191);
 }
-.Sweden1points, .Sweden2points{
+#container1 .Sweden1points, #container1 .Sweden2points{
 	fill: rgb(88,191,191);	
 }
-#Switzerlandline, .SwitzerlandInfoBox{
+#container1 #Switzerlandline, #container1 .SwitzerlandInfoBox{
 	stroke:rgb(243,130,61);
 }
-#Switzerlandkey, #SwitzerlandkeyText{
+#container1 #Switzerlandkey, #container1 #SwitzerlandkeyText{
 	fill: rgb(243,130,61);
 }
-.Switzerlandpoints{
+#container1 .Switzerlandpoints{
 	fill: rgb(243,130,61);	
 }
-#Germany1line, #Germany2line, .Germany2InfoBox, .Germany1InfoBox{
+#container1 #Germany1line, #Germany2line, #container1 .Germany2InfoBox, #container1 .Germany1InfoBox{
 	stroke:rgb(23,85,132);
 }
-#Germany1key, #Germany1keyText{
+#container1 #Germany1key, #container1 #Germany1keyText{
 	fill: rgb(23,85,132);
 }
-.Germany1points, .Germany2points{
+#container1 .Germany1points, .Germany2points{
 	fill: rgb(23,85,132);	
 }
-#Netherlandsline, .NetherlandsInfoBox{
+#container1 #Netherlandsline, #container1 .NetherlandsInfoBox{
 	stroke:rgb(180,138,56);
 }
-#Netherlandskey, #NetherlandskeyText{
+#container1 #Netherlandskey, #container1 #NetherlandskeyText{
 	fill: rgb(180,138,56);
 }
-.Netherlandspoints{
+#container1 .Netherlandspoints{
 	fill: rgb(180,138,56);	
 }
-#Canadaline, .CanadaInfoBox{
+#container1 #Canadaline, #container1 .CanadaInfoBox{
 	stroke:rgb(230,198,132);
 }
-#Canadakey, #CanadakeyText{
+#container1 #Canadakey, #container1 #CanadakeyText{
 	fill: rgb(230,198,132);
 }
-.Canadapoints{
+#container1 .Canadapoints{
 	fill: rgb(230,198,132);	
 }
-#UnitedKingdomline, .UnitedKingdomInfoBox{
+#container1 #UnitedKingdomline, #container1 .UnitedKingdomInfoBox{
 	stroke:rgb(18,57,85);
 }
-#UnitedKingdomkey, #UnitedKingdomkeyText{
+#container1 #UnitedKingdomkey, #container1 #UnitedKingdomkeyText{
 	fill: rgb(18,57,85);
 }
-.UnitedKingdompoints{
+#container1 .UnitedKingdompoints{
 	fill: rgb(18,57,85);	
 }
-#NewZealandline, .NewZealandInfoBox{
+#container1 #NewZealandline, #container1 .NewZealandInfoBox{
 	stroke:rgb(31,127,201);
 }
-#NewZealandkey, #NewZealandkeyText{
+#container1 #NewZealandkey, #container1 #NewZealandkeyText{
 	fill: rgb(31,127,201);
 }
-.NewZealandpoints{
+#container1 .NewZealandpoints{
 	fill: rgb(31,127,201);	
 }
-#Norwayline, .NorwayInfoBox{
+#container1 #Norwayline, #container1 .NorwayInfoBox{
 	stroke:rgb(79,116,63);
 }
-#Norwaykey, #NorwaykeyText{
+#container1 #Norwaykey, #container1 #NorwaykeyText{
 	fill: rgb(79,116,63);
 }
-.Norwaypoints{
+#container1 .Norwaypoints{
 	fill: rgb(79,116,63);	
 }
-#Australialine, .AustraliaInfoBox{
+#container1 #Australialine, #container1 .AustraliaInfoBox{
 	stroke:rgb(148,196,128);
 }
-#Australiakey, #AustraliakeyText{
+#container1 #Australiakey, #container1 #AustraliakeyText{
 	fill: rgb(148,196,128);
 }
-.Australiapoints{
+#container1 .Australiapoints{
 	fill: rgb(148,196,128);	
 }
 
-
-.note{
+#container1 .note{
 	fill: black;
 	font-size: 10px;
+}
+
+/*Chart2*/
+#container2 {
+	margin: auto;
+}
+#container2 #controls{
+  margin-bottom: 10px;
+}
+#container2 #note{
+  fill: black;
+  stroke: none;
+}
+
+#container2 .alignLeft {
+	text-align: left;
+}
+
+#container2 .chartTitle {
+	font-size: 29px;
+}
+
+#container2 .selectedBtn {
+  box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 8px rgba(82,168,236,.8);
+  outline: 0 none;
+}
+#container2 .btn {
+  margin: 2px 5px 0 5px;
+}
+
+#container2 .avgLine{
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+#container2 .avgLabel {
+  fill: #ccc;
+  text-anchor: left;
+  font-size: 18px;
+}
+
+#container2 .pointLabel, .point {
+  cursor: pointer;
 }
 

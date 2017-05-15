@@ -16,7 +16,7 @@ var svg = d3.select("#container1").append("svg")
       .attr("width", w)
       .attr("height", h);
 var chart = svg.append("g")
-      .classed("display", true)
+      .classed("display1", true)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 var x = d3.scale.linear()
           .domain([1980, 2014])
@@ -58,21 +58,21 @@ function plotAxes(params){//TODO duplicated in ex4
     .attr('id', 'chartTitle')
     .html("Health Care Spending as a Percentage of GDP, 1980-2014")
   
-  d3.select('.display')//Note  TODO must be more efficient way to add multiline notes
+  d3.select('.display1')//Note  TODO must be more efficient way to add multiline notes
     .append('text')
     .classed('note', true)
     .attr('x', -30)
     .attr('y', height + 70)
     .classed('alignLeft', true)
     .html('GDP refers to gross domestic product.')
-  d3.select('.display')//Note
+  d3.select('.display1')//Note
     .append('text')
     .classed('note', true)
     .attr('x', -30)
     .attr('y', height + 80)
     .classed('alignLeft', true)
     .html('Source: OECD Health Data 2016. Note: Australia, Germany, Japan, Netherlands and Switzerland data is for current spending only, and excludes spending on capital formation of health care')
-  d3.select('.display')//Note
+  d3.select('.display1')//Note
     .append('text')
     .classed('note', true)
     .attr('x', -30)

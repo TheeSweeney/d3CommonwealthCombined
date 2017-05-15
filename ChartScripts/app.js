@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 var currentDataSet = dataSet.dataOverall.data;
 var currentTitle = dataSet.dataOverall.title
-var w = window.outerWidth - 6;
+var w = window.outerWidth - 50;
 var h = .5625 * w;
 var margin = {
   top: 58,
@@ -19,7 +19,7 @@ var controls = d3.select('#container2')
                 .insert('div')
                 .attr('id', 'controls');
 
-var svg = d3.select("#container").insert("svg")
+var svg = d3.select("#container2").insert("svg")
       .attr("id", "chart")
       .attr("width", w)
       .attr("height", h + 50);
