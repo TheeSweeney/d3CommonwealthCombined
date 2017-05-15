@@ -9,25 +9,25 @@ var margin = {
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var svg = d3.select("#container5").append("svg")
-      .attr("id", "chart")
+var svgFive = d3.select("#container5").append("svg")
+      .classed('chart', true)
       .attr("width", w)
       .attr("height", h);
-var chart = svg.append("g")
+var chartFive = svgFive.append("g")
       .classed("display5", true)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var x = d3.scale.linear()
+var xFive = d3.scale.linear()
           .domain([1.02,1.2])
           .range([0, width])
-var y = d3.scale.linear()
+var yFive = d3.scale.linear()
           .domain([0,1.5])
           .range([height,0])
 var xAxis = d3.svg.axis()
-              .scale(x)
+              .scale(xFive)
               .orient('bottom')
               .ticks(0)
 var yAxis = d3.svg.axis()
-              .scale(y)
+              .scale(yFive)
               .orient('left')
               .ticks(0)
 var linearColorScale = d3.scale.linear()
@@ -35,13 +35,13 @@ var linearColorScale = d3.scale.linear()
                         .range(['#4ABDBC','#044C7F']);
 var line = d3.svg.line()
       .x(function(d){
-        return x(d.x);
+        return xFive(d.x);
       })
       .y(function(d){
-        return y(d.y);
+        return yFive(d.y);
       });
 //color gradient for y axis
-var defs = svg.append('defs')
+var defs = svgFive.append('defs')
 
 var yGradient = defs.append('linearGradient')//TODO prob more efficient way to do these gradients
                   .attr('id', 'svgYGradient')
@@ -218,10 +218,10 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
         
     this.selectAll('.avgLabel')
         .attr('x', function(d, i){
-          return x(d.x)
+          return xFive(d.x)
         })
         .attr('y', function(d, i){
-          return y(d.y) - 8
+          return yFive(d.y) - 8
         })
         .attr('fill', 'black')
         .text(function(d, i){
@@ -240,10 +240,10 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
       .remove()
 
 
-    svg.insert('text')
+    svgFive.insert('text')
       .attr('y', 40)
       .attr('x', 10)
-      .attr('id', 'chartTitle')
+      .attr('id', 'chartFiveTitle')
       .html("In the U.S., Worse Health System Performance Despite High Spending")
 }
 
@@ -265,24 +265,24 @@ function plot(params){
   this.selectAll('.point')//data points
       .attr('r', 4)
       .attr('cx', function(d){
-        return x(d.x)
+        return xFive(d.x)
       })
       .attr('cy', function(d){
-        return y(d.y)
+        return yFive(d.y)
       })
       .style('fill', function(d,i){
         return linearColorScale(i)
       })
   this.selectAll('.pointLabel')// country labels of data points
     .attr('x', function(d, i){
-      if(d.labelX === 'left') return x(d.x) - d.country.length*11;
-      if(d.labelX === 'right') return x(d.x) + 5; 
-      if(d.labelX === 'center') return x(d.x) - 20;     
+      if(d.labelX === 'left') return xFive(d.x) - d.country.length*11;
+      if(d.labelX === 'right') return xFive(d.x) + 5; 
+      if(d.labelX === 'center') return xFive(d.x) - 20;     
     })
     .attr('y', function(d, i){
-      if(d.labelY === 'top') return y(d.y) - 2;
-      if(d.labelY === 'center') return y(d.y) + 5;
-      if(d.labelY === 'bottom') return y(d.y) + 25;       
+      if(d.labelY === 'top') return yFive(d.y) - 2;
+      if(d.labelY === 'center') return yFive(d.y) + 5;
+      if(d.labelY === 'bottom') return yFive(d.y) + 25;       
     })
     .attr('fill', 'black')
     .text(function(d, i){
@@ -299,7 +299,7 @@ function plot(params){
     .remove();
 }
 
-plot.call(chart, {
+plot.call(chartFive, {
   data: chart5data,
   axis: {
     x: xAxis,

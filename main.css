@@ -273,3 +273,24 @@ body,html{
 #container4 .infoNumber{
 	font-size: 20px;
 }
+
+/*Chart 5*/
+
+#container5 .y .domain {
+	fill: url(#svgYGradient);
+}
+
+#container5 .x .domain {
+	fill: url(#svgXGradient);
+}
+
+#container5 .avgLine{
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+#container5 .avgLabel {
+  fill: #ccc;
+  font-size: 18px;
+}
