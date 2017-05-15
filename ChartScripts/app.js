@@ -1,13 +1,13 @@
 var w = 900;
 var h = 550;
-var margin = {
+var marginFive = {
   top: 98,
   bottom: 60,
   left: 140,
   right: 40
 };
-var width = w - margin.left - margin.right;
-var height = h - margin.top - margin.bottom;
+var width = w - marginFive.left - marginFive.right;
+var height = h - marginFive.top - marginFive.bottom;
 
 var svgFive = d3.select("#container5").append("svg")
       .classed('chart', true)
@@ -15,25 +15,25 @@ var svgFive = d3.select("#container5").append("svg")
       .attr("height", h);
 var chartFive = svgFive.append("g")
       .classed("display5", true)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + marginFive.left + "," + marginFive.top + ")");
 var xFive = d3.scale.linear()
           .domain([1.02,1.2])
           .range([0, width])
 var yFive = d3.scale.linear()
           .domain([0,1.5])
           .range([height,0])
-var xAxis = d3.svg.axis()
+var xAxisFive = d3.svg.axis()
               .scale(xFive)
               .orient('bottom')
               .ticks(0)
-var yAxis = d3.svg.axis()
+var yAxisFive = d3.svg.axis()
               .scale(yFive)
               .orient('left')
               .ticks(0)
 var linearColorScale = d3.scale.linear()
                         .domain([1, 11])
                         .range(['#4ABDBC','#044C7F']);
-var line = d3.svg.line()
+var lineFive = d3.svg.line()
       .x(function(d){
         return xFive(d.x);
       })
@@ -80,7 +80,7 @@ xGradient.append('stop')
         .attr('stop-opacity', 1);
 
 
-function yAxesAndLabels(params) {//TODO factor out to prevent code repition in this and exhibit 3
+function yAxesAndLabelsFive(params) {//TODO factor out to prevent code repition in this and exhibit 3
     this.append('g')//y axis
         .classed('y axis grad', true)
         .attr('transform', 'translate(0,0)')
@@ -91,7 +91,7 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
         .attr('transform', 'translate(10,' + (height + 10) + ')')
         .call(params.axis.x)
 
-    this.select('.y.axis')// yAxis Top Label
+    this.select('.y.axis')// yAxisFive Top Label
         .append('text')
         .style('font-size', '16px')
         .style('fill', '#4ABDBC')
@@ -115,7 +115,7 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
         .attr('y', 44)
         .text('performance')
 
-     this.select('.y.axis')// yAxis Bottom Label
+     this.select('.y.axis')// yAxisFive Bottom Label
         .append('text')
         .style('font-size', '16px')
         .style('fill', '#044C7F')
@@ -139,7 +139,7 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
         .attr('y', height + 14)
         .text('performance')    
 
-    this.select('.x.axis')// xAxis Left Label
+    this.select('.x.axis')// xAxisFive Left Label
         .append('text')
         .style('font-size', '16px')//TODO factor out styling into CSS
         .style('fill', '#4ABDBC')
@@ -147,7 +147,7 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
         .attr('y', 30)
         .text('Lower health care spending')
 
-    this.select('.x.axis')// xAxis Right Label
+    this.select('.x.axis')// xAxisFive Right Label
         .append('text')
         .style('text-anchor', 'end')
         .style('font-size', '16px')
@@ -213,7 +213,7 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
     //update
     this.selectAll('.avgLine')
         .attr('d', function(d){
-          return line(d);
+          return lineFive(d);
         })
         
     this.selectAll('.avgLabel')
@@ -247,9 +247,9 @@ function yAxesAndLabels(params) {//TODO factor out to prevent code repition in t
       .html("In the U.S., Worse Health System Performance Despite High Spending")
 }
 
-function plot(params){
+function plotFive(params){
 
-  yAxesAndLabels.call(this, params)
+  yAxesAndLabelsFive.call(this, params)
   //enter
   this.selectAll('.point')
       .data(params.data)
@@ -299,10 +299,10 @@ function plot(params){
     .remove();
 }
 
-plot.call(chartFive, {
+plotFive.call(chartFive, {
   data: chart5data,
   axis: {
-    x: xAxis,
-    y: yAxis
+    x: xAxisFive,
+    y: yAxisFive
   }
 })

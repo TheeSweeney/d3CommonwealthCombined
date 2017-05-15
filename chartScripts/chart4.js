@@ -1,14 +1,14 @@
 
 var w = 800;
 var h = 500;
-var margin = {
+var marginFour = {
   top: 108,
   bottom: 100,
   left: 40,
   right: 40
 };
-var width = w - margin.left - margin.right;
-var height = h - margin.top - margin.bottom;
+var width = w - marginFour.left - marginFour.right;
+var height = h - marginFour.top - marginFour.bottom;
 
 var svgFourg = d3.select('#container4').append('svg')
             .classed('chart', true)
@@ -16,7 +16,7 @@ var svgFourg = d3.select('#container4').append('svg')
             .attr('height', h)
 var chart = svgFourg.append('g')
               .classed('displayFour', true)
-              .attr('transform','translate(' + margin.right  + ',' + margin.top + ')')
+              .attr('transform','translate(' + marginFour.right  + ',' + marginFour.top + ')')
 var controls = d3.select('#container4')
                 .append('div')
                 .attr('id', 'controls');
@@ -336,8 +336,8 @@ function resize4(params){
   w = window.outerWidth - 50;
   h = w * .625 - 50;
 
-  width = w - margin.left - margin.right;
-  height = h - margin.top - margin.bottom;
+  width = w - marginFour.left - marginFour.right;
+  height = h - marginFour.top - marginFour.bottom;
 
   x = d3.scale.linear()
         .domain([-.5, chart4data['2014Ascending'].length-.5])
