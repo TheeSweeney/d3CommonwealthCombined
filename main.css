@@ -1,0 +1,176 @@
+body,html{
+	margin: 0;
+	padding: 0;
+	font-family: "Arial", sans-serif;
+	font-size: 0.95em;
+	text-align: center;
+}
+#chart{
+	border: 1px solid #CCC;
+}
+
+text {
+	fill: #ccc;
+	font-size: 14px;
+}
+
+.axis path, .axis line{
+	fill: none;
+	stroke: none;
+	shape-rendering: crispEdges;
+}
+
+.tick text{
+	fill: gray;
+}
+
+.trendline{
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 3px;
+}
+
+.gridline line{
+	fill: none;
+	stroke: #ccc;
+	shape-rendering: crispEdges;
+}
+
+#chartTitle{
+	font-size: 29px;
+	fill: black;
+}
+
+.key{
+	cursor: default;
+	shape-rendering: crispEdges;
+}
+
+.keyText{
+	cursor: default;
+	font-size: 12px;
+}
+
+.infoBubbleData{
+	fill: black;
+}
+
+#infoBubble{
+	fill: white;
+	stroke-width: 3px;
+}
+
+#infoBubbleYear{
+	font-size: 12px;
+}
+
+#infoBubbleGDP{
+	font-size: 30px;
+}
+
+#UnitedStatesline, .UnitedStatesInfoBox{
+	stroke: rgb(162,83,35);
+}
+#UnitedStateskey, #UnitedStateskeyText{
+	fill:  rgb(162,83,35);
+}
+.UnitedStatespoints{
+	fill: rgb(162,83,35);
+}
+#Franceline, .FranceInfoBox{
+	stroke:rgb(57,123,122);
+}
+#Francekey, #FrancekeyText{
+	fill: rgb(57,123,122);
+}
+.Francepoints{
+	fill: rgb(57,123,122);	
+}
+#Sweden1line, #Sweden2line, .Sweden2InfoBox, .Sweden1InfoBox{
+	stroke:rgb(88,191,191);
+}
+#Sweden1key, #Sweden1keyText{
+	fill: rgb(88,191,191);
+}
+.Sweden1points, .Sweden2points{
+	fill: rgb(88,191,191);	
+}
+#Switzerlandline, .SwitzerlandInfoBox{
+	stroke:rgb(243,130,61);
+}
+#Switzerlandkey, #SwitzerlandkeyText{
+	fill: rgb(243,130,61);
+}
+.Switzerlandpoints{
+	fill: rgb(243,130,61);	
+}
+#Germany1line, #Germany2line, .Germany2InfoBox, .Germany1InfoBox{
+	stroke:rgb(23,85,132);
+}
+#Germany1key, #Germany1keyText{
+	fill: rgb(23,85,132);
+}
+.Germany1points, .Germany2points{
+	fill: rgb(23,85,132);	
+}
+#Netherlandsline, .NetherlandsInfoBox{
+	stroke:rgb(180,138,56);
+}
+#Netherlandskey, #NetherlandskeyText{
+	fill: rgb(180,138,56);
+}
+.Netherlandspoints{
+	fill: rgb(180,138,56);	
+}
+#Canadaline, .CanadaInfoBox{
+	stroke:rgb(230,198,132);
+}
+#Canadakey, #CanadakeyText{
+	fill: rgb(230,198,132);
+}
+.Canadapoints{
+	fill: rgb(230,198,132);	
+}
+#UnitedKingdomline, .UnitedKingdomInfoBox{
+	stroke:rgb(18,57,85);
+}
+#UnitedKingdomkey, #UnitedKingdomkeyText{
+	fill: rgb(18,57,85);
+}
+.UnitedKingdompoints{
+	fill: rgb(18,57,85);	
+}
+#NewZealandline, .NewZealandInfoBox{
+	stroke:rgb(31,127,201);
+}
+#NewZealandkey, #NewZealandkeyText{
+	fill: rgb(31,127,201);
+}
+.NewZealandpoints{
+	fill: rgb(31,127,201);	
+}
+#Norwayline, .NorwayInfoBox{
+	stroke:rgb(79,116,63);
+}
+#Norwaykey, #NorwaykeyText{
+	fill: rgb(79,116,63);
+}
+.Norwaypoints{
+	fill: rgb(79,116,63);	
+}
+#Australialine, .AustraliaInfoBox{
+	stroke:rgb(148,196,128);
+}
+#Australiakey, #AustraliakeyText{
+	fill: rgb(148,196,128);
+}
+.Australiapoints{
+	fill: rgb(148,196,128);	
+}
+
+
+.note{
+	fill: black;
+	font-size: 10px;
+}
+
