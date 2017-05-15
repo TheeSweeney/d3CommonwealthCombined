@@ -12,7 +12,7 @@ var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
 var svg = d3.select("#container1").append("svg")
-      .classed('chart', true)
+      .attr("id", "chart")
       .attr("width", w)
       .attr("height", h);
 var chart = svg.append("g")

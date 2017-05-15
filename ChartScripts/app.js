@@ -20,19 +20,21 @@ var chart = svg.append('g')
 var controls = d3.select('body')
                 .append('div')
                 .attr('id', 'controls');
-var x = d3.scaleLinear()
+var x = d3.scale.linear()
           .domain([-.5, data['2014Ascending'].length-.5])
           .range([0, width])
-var y = d3.scaleLinear()
+var y = d3.scale.linear()
           .domain([0, 160])
           .range([height, 0])
-var xAxis = d3.axisBottom(x)
+var xAxis = d3.svg.axis(x)
+              .orient('bottom')
               .tickFormat(function(d){
                 return
               })
               .tickSize(0)
 
-var yAxis = d3.axisLeft(y)
+var yAxis = d3.svg.axis(y)
+              .orient('left')
               .tickSize(0)
 var sort2014_btn = controls.append('button')
                       .html('Sort Low to High by 2014 rate')
@@ -337,19 +339,21 @@ function resize(params){
   width = w - margin.left - margin.right;
   height = h - margin.top - margin.bottom;
 
-  x = d3.scaleLinear()
+  x = d3.scale.linear()
         .domain([-.5, data['2014Ascending'].length-.5])
         .range([0, width])
-  y = d3.scaleLinear()
+  y = d3.scale.linear()
         .domain([0, 160])
         .range([height, 0])
-  xAxis = d3.axisBottom(x)
+  xAxis = d3.svg.axis(x)
+                .orient('bottom')
             .tickFormat(function(d){
               return
             })
             .tickSize(0)
 
-  yAxis = d3.axisLeft(y)
+  yAxis = d3.svg.axis(y)
+            .orient('left')
             .tickSize(0)
   
   d3.select(this.node().parentNode)//resize SVG element
