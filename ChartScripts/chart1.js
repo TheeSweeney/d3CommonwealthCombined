@@ -1,31 +1,31 @@
 
 
-var w = 850;
-var h = 525;
-var margin = {
+var w;
+var h;
+var marginOne = {
   top: 100,
   bottom: 75,
   left: 40,
   right: 190
 };
-var width = w - margin.left - margin.right;
-var height = h - margin.top - margin.bottom;
+var width = w - marginOne.left - marginOne.right;
+var height = h - marginOne.top - marginOne.bottom;
 
-var svg = d3.select("#container1").append("svg")
+var svgOne = d3.select("#container1").append("svg")
       .classed('chart', true)
       .attr("width", w)
       .attr("height", h);
-var chart = svg.append("g")
+var chartOne = svgOne.append("g")
       .classed("display1", true)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var x = d3.scale.linear()
+      .attr("transform", "translate(" + marginOne.left + "," + marginOne.top + ")");
+var xOne = d3.scale.linear()
           .domain([1980, 2014])
           .range([0, width])
 var y = d3.scale.linear()
           .domain([0, 18])
           .range([height, 0])
 var xAxis = d3.svg.axis()
-              .scale(x)
+              .scale(xOne)
               .orient('bottom')
               .ticks(12)
               .tickSize(0)
@@ -42,39 +42,39 @@ var yGridlines = d3.svg.axis()
                   .orient('left')
 var line = d3.svg.line()
             .x(function(d){
-              return x(d.year)
+              return xOne(d.year)
             })
             .y(function(d){
               return y(d.value)
             })
-var index = 0;//used for positioning key points and labels
+var index = 0;//used for positioning key chartOnepoints and labels
 var clicked = [];//used to hold actively clicked lines
 
-function plotAxes(params){//TODO duplicated in ex4
+function plotChart1Axes(params){//TODO duplicated in ex4
   
-  svg.insert('text')//Title
+  svgOne.insert('text')//Title
     .attr('x', 20)
     .attr('y', 40)
-    .attr('id', 'chartTitle')
+    .attr('id', 'chartOneTitle')
     .html("Health Care Spending as a Percentage of GDP, 1980-2014")
   
   d3.select('.display1')//Note  TODO must be more efficient way to add multiline notes
     .append('text')
-    .classed('note', true)
+    .classed('chartOnenote', true)
     .attr('x', -30)
     .attr('y', height + 70)
     .classed('alignLeft', true)
     .html('GDP refers to gross domestic product.')
   d3.select('.display1')//Note
     .append('text')
-    .classed('note', true)
+    .classed('chartOnenote', true)
     .attr('x', -30)
     .attr('y', height + 80)
     .classed('alignLeft', true)
     .html('Source: OECD Health Data 2016. Note: Australia, Germany, Japan, Netherlands and Switzerland data is for current spending only, and excludes spending on capital formation of health care')
   d3.select('.display1')//Note
     .append('text')
-    .classed('note', true)
+    .classed('chartOnenote', true)
     .attr('x', -30)
     .attr('y', height + 90)
     .classed('alignLeft', true)
@@ -110,7 +110,7 @@ function mouseOverFade(params){
       }
     }
     if(!clicked.length){
-      d3.selectAll('.trendline').style('stroke-opacity', '.1')
+      d3.selectAll('.chartOnetrendline').style('stroke-opacity', '.1')
       d3.selectAll('.keyText').style('fill-opacity', '.1')
       d3.selectAll('.key').style('fill-opacity', '.1')
     
@@ -140,7 +140,7 @@ function mouseOverFade(params){
 
 function mouseOutFade(d){
    if(!clicked.length){ 
-    d3.selectAll('.trendline').style('stroke-opacity', '1')
+    d3.selectAll('.chartOnetrendline').style('stroke-opacity', '1')
      d3.selectAll('.keyText').style('fill-opacity', '1')
      d3.selectAll('.key').style('fill-opacity', '1')
    }
@@ -165,7 +165,7 @@ function infoHover(d, country){
       .enter()
         .append('rect')
         .attr('x', function(d){
-          return x(d.year) - 30;
+          return xOne(d.year) - 30;
         })
         .attr('y', function(d){
           return y(d.value) - 60;
@@ -182,7 +182,7 @@ function infoHover(d, country){
       .enter()
         .append('text')
         .attr('x', function(d){
-          return x(d.year) - 25;
+          return xOne(d.year) - 25;
         })
         .attr('y', function(d){
           return y(d.value) - 20;
@@ -198,7 +198,7 @@ function infoHover(d, country){
       .enter()
         .append('text')
         .attr('x', function(d){
-          return x(d.year) + 5;
+          return xOne(d.year) + 5;
         })
         .attr('y', function(d){
           return y(d.value) - 20;
@@ -213,7 +213,7 @@ function infoHover(d, country){
 }
 
 
-function plotKey(params){
+function plotChart1Key(params){
   var countryName;
   params.country.includes(' ') ? countryName = params.country.replace(' ', ''): countryName = params.country
   if(!params.country.includes('2')){//build lines over
@@ -279,16 +279,16 @@ function plotKey(params){
   }
 
 }
-function plotLineAndPoints(params){
+function plotChart1LineAndPoints(params){
     
   var countryName;
   params.country.includes(' ') ? countryName = params.country.replace(' ', ''): countryName = params.country
     //enter
-  this.selectAll('.trendline' + countryName)
+  this.selectAll('.chartOnetrendline' + countryName)
     .data([params.data])
     .enter()
       .append('path')
-      .classed('trendline', true)
+      .classed('chartOnetrendline', true)
       .attr('id', countryName + 'line')
       .on('mouseover', function(d, i){
             mouseOverFade.call(this, params);
@@ -298,21 +298,21 @@ function plotLineAndPoints(params){
       })
 
 
-  this.selectAll('.points' + countryName)
+  this.selectAll('.chartOnepoints' + countryName)
     .data(params.data)
     .enter()
       .append('circle')
       .attr('r', 4)
-      .classed(countryName + 'points point', true)
+      .classed(countryName + 'chartOnepoints point', true)
   //update
-  this.selectAll('.trendline')
+  this.selectAll('.chartOnetrendline')
       .attr('d', function(d){
         return line(d)
       })
   this.selectAll('.point')
-      .style('fill-opacity', '0')//keep the points hidden
+      .style('fill-opacity', '0')//keep the chartOnepoints hidden
       .attr('cx', function(d){
-        return x(d.year)
+        return xOne(d.year)
       })
       .attr('cy', function(d){
         return y(d.value)
@@ -320,25 +320,25 @@ function plotLineAndPoints(params){
       .on('mouseover', function(d){
             params.country = d3.select(this)[0][0].classList[0].slice(0, d3.select(this)[0][0].classList[0].length - 6);
             mouseOverFade.call(this, params);
-            infoHover.call(chart, d, params.country)
+            infoHover.call(chartOne, d, params.country)
         })
 }
 
-function resize(){
+function resizeChart1(){
   w = window.outerWidth - 50;
   h = .617647 * w - 50;
 
-  width = w - margin.left - margin.right;
-  height = h - margin.top - margin.bottom; 
+  width = w - marginOne.left - marginOne.right;
+  height = h - marginOne.top - marginOne.bottom; 
 
-  x = d3.scale.linear()
+  xOne = d3.scale.linear()
               .domain([1980, 2014])
               .range([0, width])
   y = d3.scale.linear()
               .domain([0, 18])
               .range([height, 0])
   xAxis = d3.svg.axis()
-                .scale(x)
+                .scale(xOne)
                 .orient('bottom')
                 .ticks(12)
                 .tickSize(0)
@@ -353,28 +353,28 @@ function resize(){
                     .tickSize(-width, 0, 0)
                     .tickFormat('')
                     .orient('left')
-  index = 0 //used to plot key/keylabels
+  index = 0 //used to plotChart1 key/keylabels
 
-  d3.select(this.node().parentNode)//resize SVG element
+  d3.select(this.node().parentNode)//resizeChart1 SVG element
         .attr('height', h + 50)
         .attr('width', w)
 
   this.selectAll('g')//remove axes
       .remove();
-  this.selectAll('.note')//remove notes and header
+  this.selectAll('.chartOnenote')//remove notes and header
       .remove();
   this.selectAll('.key')//remove key line
       .remove();
   this.selectAll('.keyText')//remove key labels
       .remove();
-  this.selectAll('.trendline')
+  this.selectAll('.chartOnetrendline')
       .remove();
-  this.selectAll('.points')
+  this.selectAll('.chartOnepoints')
       .remove();  
-  d3.select('#chartTitle')
+  d3.select('#chartOneTitle')
       .remove();
 
-  plotAxes.call(chart, {
+  plotChart1Axes.call(chartOne, {
     axis: {
       x: xAxis,
       y: yAxis,
@@ -383,7 +383,7 @@ function resize(){
   })
 
   for( var Country in data){
-    plotLineAndPoints.call(chart, {//TODO factor out params obj? somewhat duplicated with plotAxes
+    plotChart1LineAndPoints.call(chartOne, {//TODO factor out params obj? somewhat duplicated with plotChart1Axes
       country: Country,
       data: data[Country],
       axis: {
@@ -392,14 +392,14 @@ function resize(){
       }
     })
 
-    plotKey.call(chart, {
+    plotChart1Key.call(chartOne, {
       country: Country,
       data: data[Country]
     })
   }
 }
 
-resize.call(chart, {
+resizeChart1.call(chartOne, {
   axis: {
     x: xAxis,
     y: yAxis,
@@ -409,6 +409,6 @@ resize.call(chart, {
 
 
 window.addEventListener('resize', function(e){
-  resize.call(chart)
+  resizeChart1.call(chartOne)
 })                  
 

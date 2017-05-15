@@ -25,7 +25,7 @@ body,html{
 	fill: gray;
 }
 
-#container1 .trendline{
+#container1 .chartOnetrendline{
 	fill: none;
 	stroke: #ccc;
 	stroke-width: 3px;
@@ -169,7 +169,7 @@ body,html{
 	fill: rgb(148,196,128);	
 }
 
-#container1 .note{
+#container1 .chart1note{
 	fill: black;
 	font-size: 10px;
 }

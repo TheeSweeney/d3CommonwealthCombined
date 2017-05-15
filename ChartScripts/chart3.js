@@ -379,8 +379,8 @@ function plot(params){
 
 }
 
-function resize(params){
-  w = window.outerWidth - 6;
+function resizeChart3(params){
+  w = window.outerWidth - 50;
   h = .5625 * w;
 
   height = params.height = h - margin.top - margin.bottom;
@@ -433,7 +433,7 @@ sort_overAll_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.dataOverall.data;
   currentTitle = dataSet.dataOverall.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -451,7 +451,7 @@ sort_quality_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.qualityData.data;
   currentTitle = dataSet.qualityData.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -469,7 +469,7 @@ sort_access_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.accessData.data;
   currentTitle = dataSet.accessData.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -487,7 +487,7 @@ sort_admin_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.adminData.data;
   currentTitle = dataSet.adminData.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -505,7 +505,7 @@ sort_equity_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.equityData.data;
   currentTitle = dataSet.equityData.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -523,7 +523,7 @@ sort_outcomes_btn.on('click', function(d){
   selectBtn($(this)[0].id)
   currentDataSet = dataSet.outcomesData.data;
   currentTitle = dataSet.outcomesData.title;
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
@@ -553,7 +553,7 @@ plot.call(chart, {
 
 //responsive bahavior
 window.addEventListener('resize', function(e){
-  resize.call(chart, {
+  resizeChart3.call(chart, {
     data: currentDataSet,
     title: currentTitle,
     axis: {
