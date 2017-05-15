@@ -1,412 +1,567 @@
-var w = 850;
-var h = 525;
+//BIG TODO - node.js refactor
+$(document).ready(function(){
+
+var currentDataSet = dataSet.dataOverall.data;
+var currentTitle = dataSet.dataOverall.title
+var w = window.outerWidth - 6;
+var h = .5625 * w;
 var margin = {
-  top: 100,
-  bottom: 75,
-  left: 40,
-  right: 190
+  top: 58,
+  bottom: 100,
+  left: 80,
+  right: 40
 };
+var categories = [1,2,3,4,5]
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var svg = d3.select("body").append("svg")
+var controls = d3.select('#container2')
+                .insert('div')
+                .attr('id', 'controls');
+
+var svg = d3.select("#container").insert("svg")
       .attr("id", "chart")
       .attr("width", w)
-      .attr("height", h);
+      .attr("height", h + 50);
+
 var chart = svg.append("g")
       .classed("display", true)
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + (margin.top + 50) + ")");
+
 var x = d3.scale.linear()
-          .domain([1980, 2014])
-          .range([0, width])
+          .domain(d3.extent(dataSet.dataOverall.data, function(d){
+            return d.rank;
+          }))
+          .range([10, width]);
+
+var xPoints = d3.scale.linear()
+          .domain(d3.extent(dataSet.dataOverall.data, function(d){
+            return d.rank;
+          }))
+          .range([50, width]);
+
 var y = d3.scale.linear()
-          .domain([0, 18])
+          .domain([0, d3.max(dataSet.dataOverall.data, function(d){
+            return d.value + .1;
+          })])
           .range([height, 0])
+var linearColorScale = d3.scale.linear()
+                        .domain([0, dataSet.dataOverall.data.length])
+                        .range(['#4ABDBC','#044C7F']);
+
 var xAxis = d3.svg.axis()
               .scale(x)
               .orient('bottom')
-              .ticks(12)
+              .ticks(0)
               .tickSize(0)
-              .tickFormat(function(d){
-                return d.toString()
-              })
+
 var yAxis = d3.svg.axis()
               .scale(y)
               .orient('left')
-var yGridlines = d3.svg.axis()
-                  .scale(y)
-                  .tickSize(-width, 0, 0)
-                  .tickFormat('')
-                  .orient('left')
+              .ticks(0)
+
 var line = d3.svg.line()
-            .x(function(d){
-              return x(d.year)
-            })
-            .y(function(d){
-              return y(d.value)
-            })
-var index = 0;//used for positioning key points and labels
-var clicked = [];//used to hold actively clicked lines
+      .x(function(d){
+        return x(d.date);
+      })
+      .y(function(d){
+        return y(d.value);
+      });
+//color gradient for y axis
+var defs = svg.append('defs')
 
-function plotAxes(params){//TODO duplicated in ex4
+var gradient = defs.append('linearGradient')
+                  .attr('id', 'svgGradient')
+                  .attr('x1', '0%')
+                  .attr('x2', '0%')
+                  .attr('y1', '0%')
+                  .attr('y2', '100%')
+gradient.append('stop')
+        .attr('class', 'start')
+        .attr('offset', '0%')
+        .attr('stop-color', '#4ABDBC')
+        .attr('stop-opacity', 1);
+
+gradient.append('stop')
+        .attr('class', 'end')
+        .attr('offset', '100%')
+        .attr('stop-color', '#044C7F')
+        .attr('stop-opacity', 1);
+//sorting buttons
+//TODO make button creation DRYer
+var sort_overAll_btn = controls.append('button')
+                .html('Overall')
+                .attr('id', 'overAllBtn')
+                .classed('btn', true)
+var sort_quality_btn = controls.append('button')
+                .html('Quality')
+                .attr('id', 'qualityBtn')
+                .classed('btn', true)
+var sort_access_btn = controls.append('button')
+                .html('Access')
+                .attr('id', 'accessBtn')
+                .classed('btn', true)
+var sort_admin_btn = controls.append('button')
+                .html('Administrative Efficiency')
+                .attr('id', 'adminBtn')
+                .classed('btn', true)
+var sort_equity_btn = controls.append('button')
+                .html('Equity')
+                .attr('id', 'equityBtn')
+                .classed('btn', true)
+var sort_outcomes_btn = controls.append('button')
+                .html('Health Outcomes')
+                .attr('id', 'outcomesBtn')
+                .classed('btn', true)
+function drawAxesAndLabels(params){
   
-  svg.insert('text')//Title
-    .attr('x', 20)
-    .attr('y', 40)
-    .attr('id', 'chartTitle')
-    .html("Health Care Spending as a Percentage of GDP, 1980-2014")
-  
-  d3.select('.display')//Note  TODO must be more efficient way to add multiline notes
-    .append('text')
-    .classed('note', true)
-    .attr('x', -30)
-    .attr('y', height + 70)
-    .classed('alignLeft', true)
-    .html('GDP refers to gross domestic product.')
-  d3.select('.display')//Note
-    .append('text')
-    .classed('note', true)
-    .attr('x', -30)
-    .attr('y', height + 80)
-    .classed('alignLeft', true)
-    .html('Source: OECD Health Data 2016. Note: Australia, Germany, Japan, Netherlands and Switzerland data is for current spending only, and excludes spending on capital formation of health care')
-  d3.select('.display')//Note
-    .append('text')
-    .classed('note', true)
-    .attr('x', -30)
-    .attr('y', height + 90)
-    .classed('alignLeft', true)
-    .html('providers.')
+  var axesLabels = {
+    top: 'Higher Performing',
+    bottom: 'Lower Performing'
+  }
 
-  this.append('g')
-      .classed('gridline y', true)
-      .attr('transform','translate(0,0)')
-      .call(params.axis.gridlines)
-  this.append('g')
-      .classed('x axis', true)
-      .attr('transform','translate(0,' + (height + 10)+ ')')
-      .call(params.axis.x)
-  this.append('g')
-      .classed('y axis', true)
-      .call(params.axis.y)
+  function yAxesAndLabels() {//TODO factor out to prevent code repition in this and exhibit 5
+    this.append('g')//y axis
+        .classed('y axis', true)
+        .attr('transform', 'translate(0,0)')
+        .call(params.axis.y)
 
-  this.select('.y.axis')//Top Label
+
+    this.select('.y.axis')//Top Label
         .append('text')
-        .attr('x', 0)
+        .style('font-size', '18px')
+        .style('fill', '#4ABDBC')
+        .attr('x',-10)
         .attr('y',-20)
-        .text('Percent')
-}
+        .text(axesLabels.top)
 
-function mouseOverFade(params){
-    var countryName;
-    params.country.includes(' ') ? countryName = params.country.replace(' ', ''): countryName = params.country
-
-    function multiLineFade(opacity){
-      var prefix = countryName.replace('1','').replace('2','')
-      for(var i = 1; i < 3; i++){
-        d3.select('#' + prefix + i + 'line').style('stroke-opacity', opacity)
-      }
-    }
-    if(!clicked.length){
-      d3.selectAll('.trendline').style('stroke-opacity', '.1')
-      d3.selectAll('.keyText').style('fill-opacity', '.1')
-      d3.selectAll('.key').style('fill-opacity', '.1')
-    
-      d3.select('#' + countryName + 'line' ).style('stroke-opacity', '1')
-      d3.select('#' + countryName + 'keyText' ).style('fill-opacity', '1')
-      d3.select('#' + countryName + 'key' ).style('fill-opacity', '1')
-      
-      if(countryName.includes('1') || countryName.includes('2')){//if line is part of a split dataset
-        multiLineFade('1');
-      }
-    } else if(!clicked.includes(countryName)){
-      d3.select('#' + countryName + 'line' ).style('stroke-opacity', '.1')
-      d3.select('#' + countryName + 'keyText' ).style('fill-opacity', '.1')
-      d3.select('#' + countryName + 'key' ).style('fill-opacity', '.1')
-      if(countryName.includes('1') || countryName.includes('2')){//if line is part of a split dataset
-        multiLineFade('.1');
-      }
-    } else {
-      d3.select('#' + countryName + 'line' ).style('stroke-opacity', '1')
-      d3.select('#' + countryName + 'keyText' ).style('fill-opacity', '1')
-      d3.select('#' + countryName + 'key' ).style('fill-opacity', '1')
-      if(countryName.includes('1') || countryName.includes('2')){//if line is part of a split dataset
-        multiLineFade('1');
-      }
-    }
-}
-
-function mouseOutFade(d){
-   if(!clicked.length){ 
-    d3.selectAll('.trendline').style('stroke-opacity', '1')
-     d3.selectAll('.keyText').style('fill-opacity', '1')
-     d3.selectAll('.key').style('fill-opacity', '1')
-   }
-}
-
-function removeInfoBox(){
-  this.selectAll('#infoBubble')
-      .remove();
-  this.selectAll('#infoBubbleGDP')
-      .remove();
-  this.selectAll('#infoBubbleYear')
-      .remove();
-}
-
-function infoHover(d, country){
-
-  if(clicked.length === 0 ||  clicked.includes(country)){
-    removeInfoBox.call(this)
-  
-    this.selectAll('#infoBubble')
-      .data([d])
-      .enter()
-        .append('rect')
-        .attr('x', function(d){
-          return x(d.year) - 30;
-        })
-        .attr('y', function(d){
-          return y(d.value) - 60;
-        })
-        .attr('rx', 5)
-        .attr('ry', 5)        
-        .attr('height', 50)
-        .attr('width', 125)
-        .attr('id', 'infoBubble')
-        .classed( country + 'InfoBox', true)
-  
-    this.selectAll('#infoBubbleYear')
-      .data([d])
-      .enter()
+    this.select('.y.axis')//Bottom Label
         .append('text')
-        .attr('x', function(d){
-          return x(d.year) - 25;
+        .style('font-size', '18px')
+        .style('fill', '#044C7F')
+        .attr('x',-10)
+        .attr('y', height + 35)
+        .text(axesLabels.bottom)    
+    this.select('.domain')
+        .attr("fill", "url(#svgGradient)")
+
+    this.select('g')//top Triangle
+        .append('path')
+        .attr('d', function(d){
+          return 'M 22,40 42,40 32,22 z';
         })
-        .attr('y', function(d){
-          return y(d.value) - 20;
-        })  
-        .attr('id', 'infoBubbleYear')
-        .text(function(d){
-          return d.year + ':';
+        .attr('transform', 'translate(-35,-35)')
+        .style('fill', '#4ABDBC')
+
+
+    this.select('g')//bottom Triangle
+        .append('path')
+        .attr('d', function(d){
+          return 'M 22,28 42,28 32,46 z';
         })
-        .classed('infoBubbleData', true)
-  
-    this.selectAll('#infoBubbleGDP') 
-      .data([d])
-      .enter()
-        .append('text')
-        .attr('x', function(d){
-          return x(d.year) + 5;
-        })
-        .attr('y', function(d){
-          return y(d.value) - 20;
-        })  
-        .attr('id', 'infoBubbleGDP')
-        .text(function(d){
-          return d.value.toString().slice(0,4) + '%';
-        })
-        .classed('infoBubbleData', true)
+        .attr('transform', 'translate(-35,' + (height - 30) + ')')
+        .style('fill', '#044C7F')
   }
 
-}
 
-
-function plotKey(params){
-  var countryName;
-  params.country.includes(' ') ? countryName = params.country.replace(' ', ''): countryName = params.country
-  if(!params.country.includes('2')){//build lines over
-
-
-    this.selectAll('.key' + countryName)
-        .data([params.data])
-        .enter()
-          .append('rect')
-          .classed('key', true)
-          .attr('id', countryName + 'key')
-          .attr('y', index*12)
-          .attr('x', width + 50)
-          .attr('height', 2)
-          .attr('width', 12)
-          .on('mouseover', function(d, i){
-            mouseOverFade.call(this, params);
-            removeInfoBox.call(chart);
-          })
-          .on('mouseout', function(d, i){
-            mouseOutFade(d);
-          })
-          .on('click', function(d,i){
-            clicked.includes(countryName) ? clicked.splice(clicked.indexOf(countryName), 1) : clicked.push(countryName);
-            mouseOverFade.call(this, params, d)
-          })
-
-    this.selectAll('.keyText' + countryName)
-        .data([params.data])
-        .enter()
-          .append('text')
-          .classed('keyText', true)
-          .attr('id', countryName + 'keyText')
-          .attr('y', (index*12) + 5)
-          .attr('x', width + 70)
-          .text(function(){
-            if(params.country.includes('1')){
-              return params.country.replace('1','')
-            }
-            return params.country
-          })
-          .on('mouseover', function(d, i){
-            removeInfoBox.call(chart);
-            mouseOverFade.call(this, params);
-          })
-          .on('mouseout', function(d, i){
-            mouseOutFade(d);
-          })
-          .on('click', function(d,i){
-            if(countryName.includes('1') || countryName.includes('2')){//if line is part of a split dataset
-              countryName = countryName.replace('1','').replace('2','')
-              for(var i = 1; i < 3; i++){
-                clicked.includes(countryName + i.toString()) ? clicked.splice(clicked.indexOf(countryName + i.toString()), 1) : clicked.push(countryName + i.toString());
-              }
-            }else{
-              clicked.includes(countryName) ? clicked.splice(clicked.indexOf(countryName), 1) : clicked.push(countryName);
-            }
-            mouseOverFade.call(this, params, d)
-          })
-
-  
-    index++;
+  if(!params.initialize){//replot y axis on resize
+    this.select('.y.axis')
+        .remove()
+    yAxesAndLabels.call(this)
   }
 
-}
-function plotLineAndPoints(params){
+  if(params.initialize){
+    svg.insert('text')
+      .attr('y', 40)
+      .classed('chartTitle', true)
+      .html(params.title)
+
+    yAxesAndLabels.call(this)
     
-  var countryName;
-  params.country.includes(' ') ? countryName = params.country.replace(' ', ''): countryName = params.country
-    //enter
-  this.selectAll('.trendline' + countryName)
-    .data([params.data])
-    .enter()
-      .append('path')
-      .classed('trendline', true)
-      .attr('id', countryName + 'line')
-      .on('mouseover', function(d, i){
-            mouseOverFade.call(this, params);
-        })
-      .on('mouseout', function(d, i){
-        mouseOutFade(clicked);
-      })
+  }
 
+  if(!params.initialize){
+    d3.select('.chartTitle')
+      .remove()
+    
+    svg.insert('text')
+      .attr('y', 40)
+      .classed('chartTitle', true)
+      .html(params.title)
+  }
 
-  this.selectAll('.points' + countryName)
-    .data(params.data)
-    .enter()
-      .append('circle')
-      .attr('r', 4)
-      .classed(countryName + 'points point', true)
+  //calc average
+  var average = (params.data.reduce(function(acc, val){
+      return acc + val.value
+    }, 0))/params.data.length
+
+  var avgData = [
+    {value: average, date: 1, label: "Eleven-country Average"},
+    {value: average, date: 11}
+  ]
+
+  //enter
+  this.selectAll('.avgLine')
+      .data([avgData])
+      .enter()
+          .append('path')
+          .classed('avgLine', true)
+
+  this.selectAll('.avgLabel')
+  .data(avgData)
+  .enter()
+    .append('text')
+    .classed('avgLabel', true)
+
   //update
-  this.selectAll('.trendline')
+  this.selectAll('.avgLine')
+      .transition()
+      .duration(800)
       .attr('d', function(d){
-        return line(d)
+        return line(d);
       })
+      
+  this.selectAll('.avgLabel')
+      .transition()
+      .duration(800)
+      .attr('x', function(d, i){
+        return x(d.date)
+      })
+      .attr('y', function(d, i){
+        return y(d.value) - 8
+      })
+      .attr('fill', 'black')
+      .text(function(d, i){
+        return d.label
+      })
+
+  //exit
+  this.selectAll('.avgLine')
+      .data([avgData])
+      .exit()
+      .remove();
+
+    this.selectAll('.avgLabel')
+      .data(avgData)
+      .exit()
+      .remove()
+
+
+}
+function buttonFocus(d){
+  if(selectedPoints.length){
+    d3.selectAll('.point')
+    .attr('fill-opacity', '.4')
+
+    d3.selectAll('.pointLabel')
+    .attr('fill-opacity', '.4')
+  
+    selectedPoints.forEach(function(country){
+      d3.select('#' + country + 'point')
+        .attr('fill-opacity', '1')
+      d3.select('#' + country + 'label')
+        .attr('fill-opacity', '1')
+    })
+  }else{
+    d3.selectAll('.point')
+    .attr('fill-opacity', '1')
+    d3.selectAll('.pointLabel')
+    .attr('fill-opacity', '1')
+  }
+}
+
+var selectedPoints = []
+
+function plot(params){
+
+
+  //dynamically adjust y axis onClick/resize
+  var yUpdate = d3.scale.linear()
+          .domain([0, d3.max(params.data, function(d){
+            return d.value + .1;
+          })])
+          .range([params.height, 0])
+  //dynamically adjust x axis on resize
+  var xPointsUpdate = d3.scale.linear()
+                        .domain(d3.extent(params.data, function(d){
+                          return d.rank;
+                        }))
+                        .range([50, params.width])
+
+  drawAxesAndLabels.call(this, params)
+
+  d3.select('#note')
+    .remove()
+  d3.select('.display')//Note
+        .append('text')
+        .attr('id', 'note')
+        .attr('x',0)
+        .attr('y', params.height + 75)
+        .classed('alignLeft', true)
+        .html('Note: See the methodology appendix for a description of how the performance score is calculated.')
+  //TODO: factor out text for labels, and note so plot() can but used on different charts
+  
+  //enter()
   this.selectAll('.point')
-      .style('fill-opacity', '0')//keep the points hidden
+      .data(params.data)
+      .enter()
+        .append('circle')
+        .classed('point', true)
+        .attr('r', 4)
+        .style('fill', function(d,i){
+          return linearColorScale(i)
+        })
+        .on('click', function(d,i){
+          selectedPoints.includes(d.country) ? selectedPoints.splice(selectedPoints.indexOf(d.country), 1) : selectedPoints.push(d.country);
+          buttonFocus.call(this, d);
+          console.log(d)
+        })
+
+  this.selectAll('.pointLabel')
+      .data(params.data)
+      .enter()
+        .append('text')
+        .classed('pointLabel', true)
+        .on('click', function(d,i){
+          selectedPoints.includes(d.country) ? selectedPoints.splice(selectedPoints.indexOf(d.country), 1) : selectedPoints.push(d.country);
+          buttonFocus.call(this, d);
+          // console.log(d)
+        })
+        
+
+  //update
+  this.selectAll('.point')
+      .transition()
+      .duration(800)
+      .style('fill', function(d, i){
+        return linearColorScale(d.rank)
+      })
       .attr('cx', function(d){
-        return x(d.year)
+        return xPointsUpdate(d.rank);
       })
       .attr('cy', function(d){
-        return y(d.value)
+        return yUpdate(d.value)
       })
-      .on('mouseover', function(d){
-            params.country = d3.select(this)[0][0].classList[0].slice(0, d3.select(this)[0][0].classList[0].length - 6);
-            mouseOverFade.call(this, params);
-            infoHover.call(chart, d, params.country)
-        })
+      .attr('id', function(d){
+        return (d.country + 'point');
+      })
+  this.selectAll('.pointLabel')
+    .transition()
+    .duration(800)
+    .attr('x', function(d, i){
+      return xPointsUpdate(d.rank) - d.country.length*5;
+    })
+    .attr('y', function(d, i){
+      return yUpdate(d.value) - 7;
+    })
+    .attr('fill', 'black')
+    .text(function(d, i){
+      return d.country
+    })
+    .attr('id', function(d){
+      return (d.country + 'label');
+    })
+
+
+  //exit()
+  this.selectAll('.point')
+      .data(params.data)
+      .exit()
+      .remove();
+  this.selectAll('.pointLabel')
+      .data(params.data)
+      .exit()
+      .remove();
+  this.selectAll('#note')
+      .data(params.data)
+      .exit()
+      .remove();
+
 }
 
-function resize(){
-  w = window.outerWidth - 50;
-  h = .617647 * w - 50;
+function resize(params){
+  w = window.outerWidth - 6;
+  h = .5625 * w;
 
-  width = w - margin.left - margin.right;
-  height = h - margin.top - margin.bottom; 
-
+  height = params.height = h - margin.top - margin.bottom;
+  width = params.width = w - margin.left - margin.right;
+  
   x = d3.scale.linear()
-              .domain([1980, 2014])
-              .range([0, width])
+          .domain(d3.extent(params.data, function(d){
+            return d.rank;
+          }))
+          .range([10, params.width]);
+
   y = d3.scale.linear()
-              .domain([0, 18])
-              .range([height, 0])
-  xAxis = d3.svg.axis()
-                .scale(x)
-                .orient('bottom')
-                .ticks(12)
-                .tickSize(0)
-                .tickFormat(function(d){
-                  return d.toString()
-                })
-  yAxis = d3.svg.axis()
-                .scale(y)
-                .orient('left')
-  yGridlines = d3.svg.axis()
-                    .scale(y)
-                    .tickSize(-width, 0, 0)
-                    .tickFormat('')
-                    .orient('left')
-  index = 0 //used to plot key/keylabels
+          .domain([0, d3.max(params.data, function(d){
+            return d.value + .1;
+          })])
+          .range([params.height, 0])
 
-  d3.select(this.node().parentNode)//resize SVG element
+
+  params.axis.x = d3.svg.axis()
+                  .scale(x)
+                  .orient('bottom')
+                  .ticks(d3.time.days, 7)
+                  .tickFormat(d3.time.format('%m/%d'))
+  params.axis.y = d3.svg.axis()
+              .scale(y)
+              .orient('left')
+              .ticks(0)
+
+  x.range[10, width] 
+ 
+ //change chart size
+  d3.select(this.node().parentNode)
         .attr('height', h + 50)
-        .attr('width', w)
+        .attr('width', w);
 
-  this.selectAll('g')//remove axes
-      .remove();
-  this.selectAll('.note')//remove notes and header
-      .remove();
-  this.selectAll('.key')//remove key line
-      .remove();
-  this.selectAll('.keyText')//remove key labels
-      .remove();
-  this.selectAll('.trendline')
-      .remove();
-  this.selectAll('.points')
-      .remove();  
-  d3.select('#chartTitle')
-      .remove();
+  this.select('g')
+      .remove()
 
-  plotAxes.call(chart, {
+  plot.call(this, params)
+}
+
+function selectBtn(btnID){
+  $('.selectedBtn').removeClass('selectedBtn')
+  $('#'+btnID).addClass('selectedBtn')
+}
+
+
+sort_overAll_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.dataOverall.data;
+  currentTitle = dataSet.dataOverall.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
     axis: {
       x: xAxis,
-      y: yAxis,
-      gridlines: yGridlines
-    }
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
   })
+})
+//TODO function factory
+sort_quality_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.qualityData.data;
+  currentTitle = dataSet.qualityData.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
+  })
+})
 
-  for( var Country in data){
-    plotLineAndPoints.call(chart, {//TODO factor out params obj? somewhat duplicated with plotAxes
-      country: Country,
-      data: data[Country],
-      axis: {
-        x: xAxis,
-        y: yAxis
-      }
-    })
+sort_access_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.accessData.data;
+  currentTitle = dataSet.accessData.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
+  })
+})
 
-    plotKey.call(chart, {
-      country: Country,
-      data: data[Country]
-    })
-  }
-}
+sort_admin_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.adminData.data;
+  currentTitle = dataSet.adminData.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
+  })
+})
 
-resize.call(chart, {
-  axis: {
-    x: xAxis,
-    y: yAxis,
-    gridlines: yGridlines
-  }
+sort_equity_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.equityData.data;
+  currentTitle = dataSet.equityData.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
+  })
+})
+
+sort_outcomes_btn.on('click', function(d){
+  
+  selectBtn($(this)[0].id)
+  currentDataSet = dataSet.outcomesData.data;
+  currentTitle = dataSet.outcomesData.title;
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+  initialize: false,
+  height: height,
+  width: width
+  })
 })
 
 
-window.addEventListener('resize', function(e){
-  resize.call(chart)
-})                  
 
+plot.call(chart, {
+  data: currentDataSet,
+  title: currentTitle,
+  axis: {
+    x: xAxis,
+    y: yAxis
+  },
+  initialize: true,
+  height: height,
+  width: width
+});
+
+
+//responsive bahavior
+window.addEventListener('resize', function(e){
+  resize.call(chart, {
+    data: currentDataSet,
+    title: currentTitle,
+    axis: {
+      x: xAxis,
+      y: yAxis
+    },
+    initialize: false,
+  });
+  }, true)
+
+})
