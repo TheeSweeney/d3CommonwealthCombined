@@ -20,7 +20,7 @@ var controls = d3.select('#container2')
                 .attr('id', 'controls');
 
 var svg = d3.select("#container2").insert("svg")
-      .attr("id", "chart")
+      .classed('chart', true)
       .attr("width", w)
       .attr("height", h + 50);
 

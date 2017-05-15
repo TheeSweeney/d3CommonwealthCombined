@@ -5,10 +5,10 @@ body,html{
 	font-size: 0.95em;
 	text-align: center;
 }
-/*Chart 1*/
-#container1 #chart{
+.chart{
 	border: 1px solid #CCC;
 }
+/*Chart 1*/
 
 #container1 text {
 	fill: #ccc;
