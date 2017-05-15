@@ -10,11 +10,11 @@ var margin = {
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var svgFour = d3.select('#container4').append('svg')
+var svgFourg = d3.select('#container4').append('svg')
             .classed('chart', true)
             .attr('width', w)
             .attr('height', h)
-var chart = svgFour.append('g')
+var chart = svgFourg.append('g')
               .classed('displayFour', true)
               .attr('transform','translate(' + margin.right  + ',' + margin.top + ')')
 var controls = d3.select('#container4')
@@ -52,7 +52,7 @@ var sortMost_btn = controls.append('button')
 
 function plotAxes(params){//duplicated in ex1
 
-  svgFour.insert('text')//Title
+  svgFourg.insert('text')//Title
       .attr('x', 20)
       .attr('y', 40)
       .attr('id', 'chart4Title')
