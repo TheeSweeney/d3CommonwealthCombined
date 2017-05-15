@@ -15,11 +15,11 @@ var categories = [1,2,3,4,5]
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var controls = d3.select('#container2')
+var controls = d3.select('#container3')
                 .insert('div')
                 .attr('id', 'controls');
 
-var svg = d3.select("#container2").insert("svg")
+var svg = d3.select("#container3").insert("svg")
       .classed('chart', true)
       .attr("width", w)
       .attr("height", h + 50);

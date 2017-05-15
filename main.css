@@ -175,46 +175,43 @@ body,html{
 }
 
 /*Chart2*/
-#container2 {
-	margin: auto;
-}
-#container2 #controls{
+#container3 #controls{
   margin-bottom: 10px;
 }
-#container2 #note{
+#container3 #note{
   fill: black;
   stroke: none;
 }
 
-#container2 .alignLeft {
+#container3 .alignLeft {
 	text-align: left;
 }
 
-#container2 .chartTitle {
+#container3 .chartTitle {
 	font-size: 29px;
 }
 
-#container2 .selectedBtn {
+#container3 .selectedBtn {
   box-shadow: 0 0px 0px rgba(82,168,236,.8) inset, 0 0 8px rgba(82,168,236,.8);
   outline: 0 none;
 }
-#container2 .btn {
+#container3 .btn {
   margin: 2px 5px 0 5px;
 }
 
-#container2 .avgLine{
+#container3 .avgLine{
   fill: none;
   stroke: #ccc;
   stroke-width: 2px;
 }
 
-#container2 .avgLabel {
+#container3 .avgLabel {
   fill: #ccc;
   text-anchor: left;
   font-size: 18px;
 }
 
-#container2 .pointLabel, .point {
+#container3 .pointLabel, #container3 .point {
   cursor: pointer;
 }
 
