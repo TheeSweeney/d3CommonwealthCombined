@@ -21,7 +21,7 @@ var controls = d3.select('#container4')
                 .append('div')
                 .attr('id', 'controls');
 var x = d3.scale.linear()
-          .domain([-.5, data['2014Ascending'].length-.5])
+          .domain([-.5, chart4data['2014Ascending'].length-.5])
           .range([0, width])
 var y = d3.scale.linear()
           .domain([0, 160])
@@ -55,7 +55,7 @@ function plotAxes(params){//duplicated in ex1
   svg.insert('text')//Title
       .attr('x', 20)
       .attr('y', 40)
-      .attr('id', 'chartTitle')
+      .attr('id', 'chart4Title')
       .html("Mortality Amenable to Health Care, 2004 and 2014")
 
   this.select('.x.axis').remove()
@@ -98,7 +98,7 @@ function plotAxes(params){//duplicated in ex1
       .attr('x', 660)
       .attr('y', -30)
       .text('2004')
-      .classed('keyText', true)
+      .classed('chart4keyText', true)
 
   this.select('.y.axis')// new key point
       .append('text')
@@ -106,7 +106,7 @@ function plotAxes(params){//duplicated in ex1
       .attr('x', 660)
       .attr('y', -15)
       .text('2014')
-      .classed('keyText', true)
+      .classed('chart4keyText', true)
 
 
 
@@ -222,7 +222,7 @@ function infoBox(d){
       .text('deaths')
 }
 
-function removeInfoBox(d){
+function removeChart4InfoBox(d){
     this.select('#' + d.country + 'InfoBox')
         .remove()
     this.select('#' + d.country + 'OldInfoText')
@@ -247,7 +247,7 @@ function plotPoints(params){
             infoBox.call(chart, d)
           })
           .on('mouseleave', function(d){
-            removeInfoBox.call(chart, d)
+            removeChart4InfoBox.call(chart, d)
           })
   this.selectAll('.label')
       .data(params.data)
@@ -258,7 +258,7 @@ function plotPoints(params){
             infoBox.call(chart, d)
           })
           .on('mouseleave', function(d){
-            removeInfoBox.call(chart, d)
+            removeChart4InfoBox.call(chart, d)
           })
 
   //update
@@ -295,15 +295,15 @@ function plotPoints(params){
 }
 
 sort2014_btn.on('click', function(){
-  plot(data['2014Ascending']);
+  plot(chart4data['2014Ascending']);
 })
 
 sortLeast_btn.on('click', function(){
-  plot(data['diffLeast']);
+  plot(chart4data['diffLeast']);
 })
 
 sortMost_btn.on('click', function(){
-  plot(data['diffMost']);
+  plot(chart4data['diffMost']);
 })
 
 plotAxes.call(chart, {
@@ -332,7 +332,7 @@ function plot(data) {
   })
 }
 
-function resize(params){
+function resize4(params){
   w = window.outerWidth - 50;
   h = w * .625 - 50;
 
@@ -340,7 +340,7 @@ function resize(params){
   height = h - margin.top - margin.bottom;
 
   x = d3.scale.linear()
-        .domain([-.5, data['2014Ascending'].length-.5])
+        .domain([-.5, chart4data['2014Ascending'].length-.5])
         .range([0, width])
   y = d3.scale.linear()
         .domain([0, 160])
@@ -362,11 +362,11 @@ function resize(params){
 
   this.selectAll('g')//remove axes
       .remove();
-  d3.selectAll('.keyText')
+  d3.selectAll('.chart4keyText')
       .remove();
-  // this.selectAll('keyText')
-  //     .remove();  
-  d3.select('#chartTitle')
+  this.selectAll('chart4keyText')
+      .remove();  
+  d3.select('#chart4Title')
       .remove();
 
   plotAxes.call(chart, {
@@ -376,12 +376,12 @@ function resize(params){
     }
   })
 
-  plot(data['2014Ascending'])
+  plot(chart4data['2014Ascending'])
 
 }
 
-resize.call(chart);
+resize4.call(chart);
 
 window.addEventListener('resize', function(){
-  resize.call(chart)
+  resize4.call(chart)
 })

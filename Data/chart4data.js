@@ -1,4 +1,4 @@
-var data = {
+var chart4data = {
   '2014Ascending':[
     {country: 'SWIZ', '2014': 55.4900915373627, '2004': 77.9092947435976, rank: 1},
     {country: 'FRA', '2014': 60.570977176236, '2004': 84.1756116285226, rank: 2},
@@ -39,11 +39,3 @@ var data = {
     {country: 'US', '2014': 111.702972108998, '2004': 132.996402106568, rank: 11},
   ]
 };
-//     var array = []
-
-// data['2014Ascending'].forEach(function(d){
-//     array.push(d['2004'] - d['2014'])
-//     array.sort()
-//     console.log(d.country + ' ' + (d['2004'] - d['2014']).toString())
-// })
-// console.log(array)
