@@ -10,12 +10,12 @@ var margin = {
 var width = w - margin.left - margin.right;
 var height = h - margin.top - margin.bottom;
 
-var svg = d3.select('#container4').append('svg')
+var svgFour = d3.select('#container4').append('svg')
             .classed('chart', true)
             .attr('width', w)
             .attr('height', h)
-var chart = svg.append('g')
-              .classed('display', true)
+var chart = svgFour.append('g')
+              .classed('displayFour', true)
               .attr('transform','translate(' + margin.right  + ',' + margin.top + ')')
 var controls = d3.select('#container4')
                 .append('div')
@@ -52,7 +52,7 @@ var sortMost_btn = controls.append('button')
 
 function plotAxes(params){//duplicated in ex1
 
-  svg.insert('text')//Title
+  svgFour.insert('text')//Title
       .attr('x', 20)
       .attr('y', 40)
       .attr('id', 'chart4Title')
@@ -114,35 +114,35 @@ function plotAxes(params){//duplicated in ex1
     d3.select('#note' + i)
     .remove()
   }
-  d3.select('.display')//Note
+  d3.select('.displayFour')//Note
     .append('text')
     .attr('id', 'note1')
     .attr('x',0)
     .attr('y', height + 50)
     .classed('alignLeft note', true)
     .html('Source: European Observatory on Health Systems and Policies (2017). Trends in amenable mortality for selected countries, 2000-2014.')
-  d3.select('.display')//Note
+  d3.select('.displayFour')//Note
     .append('text')
     .attr('id', 'note2')
     .attr('x',0)
     .attr('y', height + 60)
     .classed('alignLeft note', true)
     .html('Data for 2014 in all countries except Canada (2011), France (2013), Netherlands (2013), New Zealand (2012), Switzerland (2013), UK (2013).')
-  d3.select('.display')//Note
+  d3.select('.displayFour')//Note
     .append('text')
     .attr('id', 'note3')
     .attr('x',0)
     .attr('y', height + 70)
     .classed('alignLeft note', true)
     .html('Amenable mortality causes based on Nolte & McKee (2004). Mortality and population data derived from WHO mortality files, September 2016;')
-  d3.select('.display')//Note
+  d3.select('.displayFour')//Note
     .append('text')
     .attr('id', 'note4')
     .attr('x',0)
     .attr('y', height + 80)
     .classed('alignLeft note', true)
     .html('Population data for Canada and the USA derived from the Human Mortality Database. Age-specific rates standardised to the European Standard Population 2013.')
-d3.select('.display')//Note
+d3.select('.displayFour')//Note
     .append('text')
     .attr('id', 'note5')
     .attr('x',0)
