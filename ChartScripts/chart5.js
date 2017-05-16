@@ -1,5 +1,5 @@
-var w = 900;
-var h = 550;
+var w = window.outerWidth - 50;
+var h = w * .625 - 50;
 var marginFive = {
   top: 98,
   bottom: 60,
@@ -329,7 +329,7 @@ function resizeFive(params){
       }
   }
 
-  d3.select(this.node().parentNode)//resize svg element
+  d3.select(chartFive.node().parentNode)//resize svg element
       .attr('height', h)
       .attr('width', w)
 
