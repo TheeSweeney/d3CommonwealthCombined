@@ -333,7 +333,7 @@ function resizeFive(params){
       .attr('height', h)
       .attr('width', w)
 
-  this.selectAll('g')//remove axes and average line
+  chartFive.selectAll('g')//remove axes and average line
       .remove();
   
   yAxesAndLabelsFive.call(chartFive, params, height, width)
