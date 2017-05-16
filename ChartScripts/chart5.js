@@ -80,7 +80,7 @@ xGradient.append('stop')
         .attr('stop-opacity', 1);
 
 
-function yAxesAndLabelsFive(params) {//TODO factor out to prevent code repition in this and exhibit 3
+function yAxesAndLabelsFive(params, height, width) {//TODO factor out to prevent code repition in this and exhibit 3
     this.append('g')//y axis
         .classed('y axis grad', true)
         .attr('transform', 'translate(0,0)')
@@ -249,7 +249,6 @@ function yAxesAndLabelsFive(params) {//TODO factor out to prevent code repition 
 
 function plotFive(params){
 
-  yAxesAndLabelsFive.call(this, params)
   //enter
   this.selectAll('.point')
       .data(params.data)
@@ -298,6 +297,15 @@ function plotFive(params){
     .exit()
     .remove();
 }
+
+
+yAxesAndLabelsFive.call(chartFive, {
+    data: chart5data,
+    axis: {
+      x: xAxisFive,
+      y: yAxisFive
+    }
+  }, height, width)
 
 plotFive.call(chartFive, {
   data: chart5data,

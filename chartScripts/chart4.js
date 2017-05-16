@@ -1,6 +1,6 @@
 
-var w = 800;
-var h = 500;
+var w = window.outerWidth - 50;
+var h = w * .625 - 50;
 var marginFour = {
   top: 108,
   bottom: 100,
