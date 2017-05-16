@@ -298,6 +298,54 @@ function plotFive(params){
     .remove();
 }
 
+function resizeFive(params){
+  w = window.outerWidth - 50;
+  h = w * .625 - 50;
+
+  width = w - marginFive.left - marginFive.right;
+  height = h - marginFive.top - marginFive.bottom;
+
+  xFive = d3.scale.linear()
+        .domain([1.02,1.2])
+        .range([0, width])
+  yFive = d3.scale.linear()
+        .domain([0,1.5])
+        .range([height,0])
+
+  xAxisFive = d3.svg.axis()
+              .scale(xFive)
+              .orient('bottom')
+              .ticks(0)
+  yAxisFive = d3.svg.axis()
+              .scale(yFive)
+              .orient('left')
+              .ticks(0)
+
+  var params = {
+      data: chart5data,
+      axis: {
+        x: xAxisFive,
+        y: yAxisFive
+      }
+  }
+
+  d3.select(this.node().parentNode)//resize svg element
+      .attr('height', h)
+      .attr('width', w)
+
+  this.selectAll('g')//remove axes and average line
+      .remove();
+  
+  yAxesAndLabelsFive.call(chartFive, params, height, width)
+
+  d3.select('#chartFiveTitle')
+      .remove();
+
+  plotFive.call(chartFive, params)
+
+  
+}
+
 
 yAxesAndLabelsFive.call(chartFive, {
     data: chart5data,
@@ -313,4 +361,8 @@ plotFive.call(chartFive, {
     x: xAxisFive,
     y: yAxisFive
   }
+})
+
+window.addEventListener('resize', function(){
+  resizeFive.call(chart);
 })
