@@ -14,28 +14,31 @@ var svgFourg = d3.select('#container4').append('svg')
             .classed('chart', true)
             .attr('width', w)
             .attr('height', h)
-var chart = svgFourg.append('g')
+var chartFour = svgFourg.append('g')
               .classed('displayFour', true)
               .attr('transform','translate(' + marginFour.right  + ',' + marginFour.top + ')')
 var controls = d3.select('#container4')
                 .append('div')
                 .attr('id', 'controls');
-var x = d3.scale.linear()
+var xFour = d3.scale.linear()
           .domain([-.5, chart4data['2014Ascending'].length-.5])
           .range([0, width])
-var y = d3.scale.linear()
+var yFour = d3.scale.linear()
           .domain([0, 160])
           .range([height, 0])
-var xAxis = d3.svg.axis(x)
+var xAxisFour = d3.svg.axis(xFour)
               .orient('bottom')
               .tickFormat(function(d){
                 return
               })
               .tickSize(0)
 
-var yAxis = d3.svg.axis(y)
+var yAxisFour = d3.svg.axis(yFour)
               .orient('left')
               .tickSize(0)
+              .tickFormat(function(n){
+                console.log(n)
+              })
 var sort2014_btn = controls.append('button')
                       .html('Sort Low to High by 2014 rate')
                       .attr('id','sort2014btn')
@@ -166,14 +169,14 @@ function plotLines(params){
       .transition()
       .duration(500)
       .attr('x', function(d,i){
-        return x(d.rank - 1)
+        return xFour(d.rank - 1)
       })
       .attr('y', function(d,i){
-        return y(d[params.year])
+        return yFour(d[params.year])
       })
       .attr('width', 1)
       .attr('height', function(d,i){
-        return height - y(d[params.year])
+        return height - yFour(d[params.year])
       })
   //exit
   this.selectAll('.bar')
@@ -185,10 +188,10 @@ function plotLines(params){
 function infoBox(d){
   this.append('rect')
       .attr('x', function(){
-        return x(d.rank - 1) - 35;
+        return xFour(d.rank - 1) - 35;
       })
       .attr('y', function(){
-        return y(d['2004']) - 55
+        return yFour(d['2004']) - 55
       })
       .attr('width', 70)      
       .attr('height', 45)
@@ -200,10 +203,10 @@ function infoBox(d){
 
   this.append('text')// text top line
       .attr('x', function(){
-        return x(d.rank - 1) - 28;
+        return xFour(d.rank - 1) - 28;
       })
       .attr('y', function(){
-        return y(d['2004']) - 38;
+        return yFour(d['2004']) - 38;
       })
       .attr('id', d.country + 'OldInfoText')
       .classed('info', true)
@@ -212,10 +215,10 @@ function infoBox(d){
       })
   this.append('text')// text bottom line
       .attr('x', function(){
-        return x(d.rank - 1) - 28;
+        return xFour(d.rank - 1) - 28;
       })
       .attr('y', function(){
-        return y(d['2004']) - 18;
+        return yFour(d['2004']) - 18;
       })
       .attr('id', d.country + 'NewInfoText')
       .classed('info', true)
@@ -244,10 +247,10 @@ function plotPoints(params){
           .append('circle')
           .classed(params.class, true)
           .on('mouseenter', function(d){
-            infoBox.call(chart, d)
+            infoBox.call(chartFour, d)
           })
           .on('mouseleave', function(d){
-            removeChart4InfoBox.call(chart, d)
+            removeChart4InfoBox.call(chartFour, d)
           })
   this.selectAll('.label')
       .data(params.data)
@@ -255,10 +258,10 @@ function plotPoints(params){
           .append('text')
           .classed('label', true)
           .on('mouseenter', function(d){
-            infoBox.call(chart, d)
+            infoBox.call(chartFour, d)
           })
           .on('mouseleave', function(d){
-            removeChart4InfoBox.call(chart, d)
+            removeChart4InfoBox.call(chartFour, d)
           })
 
   //update
@@ -267,16 +270,16 @@ function plotPoints(params){
       .duration(500)
       .attr('r', 4)
       .attr('cx', function(d,i){
-        return x(d.rank - 1)
+        return xFour(d.rank - 1)
       })
       .attr('cy', function(d,i){
-        return y(d[params.year])
+        return yFour(d[params.year])
       })
   this.selectAll('.label')
       .transition()
       .duration(500)
       .attr('x', function(d){
-        return x(d.rank - 1) - (d.country.length * 2.5)
+        return xFour(d.rank - 1) - (d.country.length * 2.5)
       })
       .attr('y', height + 15)
       .attr('fill', 'black')
@@ -306,26 +309,26 @@ sortMost_btn.on('click', function(){
   plot(chart4data['diffMost']);
 })
 
-plotAxes.call(chart, {
+plotAxes.call(chartFour, {
   axis: {
-    x: xAxis,
-    y: yAxis
+    x: xAxisFour,
+    y: yAxisFour
   }
 })
 
 function plot(data) {
-  plotLines.call(chart,{
+  plotLines.call(chartFour,{
     data: data,
     year: '2004'
   })
 
-  plotPoints.call(chart, {
+  plotPoints.call(chartFour, {
     data: data,
     year: '2004',
     class: 'oldPoints'
   })
 
-  plotPoints.call(chart, {
+  plotPoints.call(chartFour, {
     data: data,
     year: '2014',
     class: 'newPoints'
@@ -339,20 +342,20 @@ function resize4(params){
   width = w - marginFour.left - marginFour.right;
   height = h - marginFour.top - marginFour.bottom;
 
-  x = d3.scale.linear()
+  xFour = d3.scale.linear()
         .domain([-.5, chart4data['2014Ascending'].length-.5])
         .range([0, width])
-  y = d3.scale.linear()
+  yFour = d3.scale.linear()
         .domain([0, 160])
         .range([height, 0])
-  xAxis = d3.svg.axis(x)
+  xAxisFour = d3.svg.axis(xFour)
                 .orient('bottom')
-            .tickFormat(function(d){
-              return
-            })
-            .tickSize(0)
+                .tickFormat(function(d){
+                  return
+                })
+                .tickSize(0)
 
-  yAxis = d3.svg.axis(y)
+  yAxisFour = d3.svg.axis(yFour)
             .orient('left')
             .tickSize(0)
   
@@ -369,10 +372,10 @@ function resize4(params){
   d3.select('#chart4Title')
       .remove();
 
-  plotAxes.call(chart, {
+  plotAxes.call(chartFour, {
     axis: {
-      x: xAxis,
-      y: yAxis
+      x: xAxisFour,
+      y: yAxisFour
     }
   })
 
@@ -380,7 +383,7 @@ function resize4(params){
 
 }
 
-resize4.call(chart);
+resize4.call(chartFour);
 
 window.addEventListener('resize', function(){
   resize4.call(chart)
